@@ -1,0 +1,123 @@
+# Exemplo de processo: abertura e tratamento de um chamado de suporte de TI
+#
+# Este arquivo é a "ata" do processo. A partir dele, o mapeador.py gera:
+#   - o diagrama BPMN 2.0 (arquivo .bpmn)
+#   - o relatório de análise (arquivo .md)
+#   - o painel de indicadores (arquivo .html)
+#
+# Leia os comentários para entender cada campo.
+
+# As raias são as "faixas" do diagrama: quem executa cada etapa.
+# Ficam no topo do arquivo (fora de qualquer seção) e a ordem aqui é a ordem
+# de cima para baixo no desenho.
+raias = ["Usuário", "Service Desk (N1)", "Equipe Técnica (N2)", "Gestão de TI"]
+
+
+[processo]
+nome = "Abertura e tratamento de chamado de suporte de TI"
+descricao = """
+Processo do dia a dia de uma equipe de suporte: o usuário abre o chamado, o
+Service Desk faz a triagem e tenta resolver. O que não se resolve no primeiro
+atendimento vai para a equipe técnica e, se depender de peça, passa pela compra.
+"""
+
+
+# ---------------------------------------------------------------------------
+# Etapas, na ordem em que aparecem no diagrama (da esquerda para a direita).
+#
+# Campos de cada etapa:
+#   id            identificador único (sem espaços)
+#   nome          o que aparece escrito no diagrama
+#   tipo          inicio | tarefa | decisao | fim
+#   raia          quem executa (precisa estar em [raias])
+#   tempo_min     tempo de trabalho, em minutos
+#   espera_min    tempo parado em fila ou aguardando terceiros, em minutos
+#   sistema       ferramenta usada (opcional)
+#   automatizavel true se dá para automatizar (opcional)
+#   proximo       para onde vai depois (opcional; se omitir, vai para a próxima)
+#   rotulos       texto das setas de saída de uma decisão (opcional)
+# ---------------------------------------------------------------------------
+
+[[etapas]]
+id = "inicio"
+nome = "Problema identificado"
+tipo = "inicio"
+raia = "Usuário"
+
+[[etapas]]
+id = "abrir"
+nome = "Abrir chamado no portal"
+tipo = "tarefa"
+raia = "Usuário"
+tempo_min = 5
+sistema = "Portal de chamados"
+automatizavel = true
+
+[[etapas]]
+id = "triagem"
+nome = "Triar e classificar o chamado"
+tipo = "tarefa"
+raia = "Service Desk (N1)"
+tempo_min = 8
+sistema = "Service Desk"
+automatizavel = true
+
+[[etapas]]
+id = "g_n1"
+nome = "Resolvido no primeiro atendimento?"
+tipo = "decisao"
+raia = "Service Desk (N1)"
+proximo = ["resolver", "encaminhar"]
+rotulos = { resolver = "Sim", encaminhar = "Não" }
+
+[[etapas]]
+id = "resolver"
+nome = "Resolver e registrar a solução"
+tipo = "tarefa"
+raia = "Service Desk (N1)"
+tempo_min = 15
+proximo = ["encerrar"]
+
+[[etapas]]
+id = "encaminhar"
+nome = "Encaminhar para a equipe técnica"
+tipo = "tarefa"
+raia = "Service Desk (N1)"
+tempo_min = 5
+automatizavel = true
+
+[[etapas]]
+id = "diagnostico"
+nome = "Diagnosticar e corrigir"
+tipo = "tarefa"
+raia = "Equipe Técnica (N2)"
+tempo_min = 90
+
+[[etapas]]
+id = "g_peca"
+nome = "Depende de peça ou fornecedor?"
+tipo = "decisao"
+raia = "Equipe Técnica (N2)"
+proximo = ["compra", "encerrar"]
+rotulos = { compra = "Sim", encerrar = "Não" }
+
+[[etapas]]
+id = "compra"
+nome = "Comprar peça ou acionar fornecedor"
+tipo = "tarefa"
+raia = "Gestão de TI"
+tempo_min = 40
+espera_min = 2880   # dois dias úteis parado aguardando a compra
+
+[[etapas]]
+id = "encerrar"
+nome = "Encerrar o chamado e confirmar com o usuário"
+tipo = "tarefa"
+raia = "Service Desk (N1)"
+tempo_min = 10
+
+[[etapas]]
+id = "fim"
+nome = "Chamado encerrado"
+tipo = "fim"
+raia = "Service Desk (N1)"

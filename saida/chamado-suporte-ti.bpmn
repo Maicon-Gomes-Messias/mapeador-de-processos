@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:collaboration id="Colaboracao_1"><bpmn:participant id="Piscina_1" name="Abertura e tratamento de chamado de suporte de TI" processRef="Processo_1" /></bpmn:collaboration>
+  <bpmn:process id="Processo_1" isExecutable="false">
+    <bpmn:laneSet id="RaiaSet_1">
+      <bpmn:lane id="Raia_1" name="Usuário"><bpmn:flowNodeRef>inicio</bpmn:flowNodeRef><bpmn:flowNodeRef>abrir</bpmn:flowNodeRef></bpmn:lane>
+      <bpmn:lane id="Raia_2" name="Service Desk (N1)"><bpmn:flowNodeRef>triagem</bpmn:flowNodeRef><bpmn:flowNodeRef>g_n1</bpmn:flowNodeRef><bpmn:flowNodeRef>resolver</bpmn:flowNodeRef><bpmn:flowNodeRef>encaminhar</bpmn:flowNodeRef><bpmn:flowNodeRef>encerrar</bpmn:flowNodeRef><bpmn:flowNodeRef>fim</bpmn:flowNodeRef></bpmn:lane>
+      <bpmn:lane id="Raia_3" name="Equipe Técnica (N2)"><bpmn:flowNodeRef>diagnostico</bpmn:flowNodeRef><bpmn:flowNodeRef>g_peca</bpmn:flowNodeRef></bpmn:lane>
+      <bpmn:lane id="Raia_4" name="Gestão de TI"><bpmn:flowNodeRef>compra</bpmn:flowNodeRef></bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="inicio" name="Problema identificado"><bpmn:outgoing>fluxo_inicio_abrir_0</bpmn:outgoing></bpmn:startEvent>
+    <bpmn:serviceTask id="abrir" name="Abrir chamado no portal"><bpmn:incoming>fluxo_inicio_abrir_0</bpmn:incoming><bpmn:outgoing>fluxo_abrir_triagem_0</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:serviceTask id="triagem" name="Triar e classificar o chamado"><bpmn:incoming>fluxo_abrir_triagem_0</bpmn:incoming><bpmn:outgoing>fluxo_triagem_g_n1_0</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="g_n1" name="Resolvido no primeiro atendimento?"><bpmn:incoming>fluxo_triagem_g_n1_0</bpmn:incoming><bpmn:outgoing>fluxo_g_n1_resolver_0</bpmn:outgoing><bpmn:outgoing>fluxo_g_n1_encaminhar_1</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:userTask id="resolver" name="Resolver e registrar a solução"><bpmn:incoming>fluxo_g_n1_resolver_0</bpmn:incoming><bpmn:outgoing>fluxo_resolver_encerrar_0</bpmn:outgoing></bpmn:userTask>
+    <bpmn:serviceTask id="encaminhar" name="Encaminhar para a equipe técnica"><bpmn:incoming>fluxo_g_n1_encaminhar_1</bpmn:incoming><bpmn:outgoing>fluxo_encaminhar_diagnostico_0</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:userTask id="diagnostico" name="Diagnosticar e corrigir"><bpmn:incoming>fluxo_encaminhar_diagnostico_0</bpmn:incoming><bpmn:outgoing>fluxo_diagnostico_g_peca_0</bpmn:outgoing></bpmn:userTask>
+    <bpmn:exclusiveGateway id="g_peca" name="Depende de peça ou fornecedor?"><bpmn:incoming>fluxo_diagnostico_g_peca_0</bpmn:incoming><bpmn:outgoing>fluxo_g_peca_compra_0</bpmn:outgoing><bpmn:outgoing>fluxo_g_peca_encerrar_1</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:userTask id="compra" name="Comprar peça ou acionar fornecedor"><bpmn:incoming>fluxo_g_peca_compra_0</bpmn:incoming><bpmn:outgoing>fluxo_compra_encerrar_0</bpmn:outgoing></bpmn:userTask>
+    <bpmn:userTask id="encerrar" name="Encerrar o chamado e confirmar com o usuário"><bpmn:incoming>fluxo_resolver_encerrar_0</bpmn:incoming><bpmn:incoming>fluxo_g_peca_encerrar_1</bpmn:incoming><bpmn:incoming>fluxo_compra_encerrar_0</bpmn:incoming><bpmn:outgoing>fluxo_encerrar_fim_0</bpmn:outgoing></bpmn:userTask>
+    <bpmn:endEvent id="fim" name="Chamado encerrado"><bpmn:incoming>fluxo_encerrar_fim_0</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="fluxo_inicio_abrir_0" sourceRef="inicio" targetRef="abrir" />
+    <bpmn:sequenceFlow id="fluxo_abrir_triagem_0" sourceRef="abrir" targetRef="triagem" />
+    <bpmn:sequenceFlow id="fluxo_triagem_g_n1_0" sourceRef="triagem" targetRef="g_n1" />
+    <bpmn:sequenceFlow id="fluxo_g_n1_resolver_0" name="Sim" sourceRef="g_n1" targetRef="resolver" />
+    <bpmn:sequenceFlow id="fluxo_g_n1_encaminhar_1" name="Não" sourceRef="g_n1" targetRef="encaminhar" />
+    <bpmn:sequenceFlow id="fluxo_resolver_encerrar_0" sourceRef="resolver" targetRef="encerrar" />
+    <bpmn:sequenceFlow id="fluxo_encaminhar_diagnostico_0" sourceRef="encaminhar" targetRef="diagnostico" />
+    <bpmn:sequenceFlow id="fluxo_diagnostico_g_peca_0" sourceRef="diagnostico" targetRef="g_peca" />
+    <bpmn:sequenceFlow id="fluxo_g_peca_compra_0" name="Sim" sourceRef="g_peca" targetRef="compra" />
+    <bpmn:sequenceFlow id="fluxo_g_peca_encerrar_1" name="Não" sourceRef="g_peca" targetRef="encerrar" />
+    <bpmn:sequenceFlow id="fluxo_compra_encerrar_0" sourceRef="compra" targetRef="encerrar" />
+    <bpmn:sequenceFlow id="fluxo_encerrar_fim_0" sourceRef="encerrar" targetRef="fim" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagrama_1">
+    <bpmndi:BPMNPlane id="Plano_1" bpmnElement="Colaboracao_1">
+      <bpmndi:BPMNShape id="Piscina_1_di" bpmnElement="Piscina_1" isHorizontal="true"><dc:Bounds x="160" y="80" width="2300" height="600" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Raia_1_di" bpmnElement="Raia_1" isHorizontal="true"><dc:Bounds x="190" y="80" width="2270" height="150" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Raia_2_di" bpmnElement="Raia_2" isHorizontal="true"><dc:Bounds x="190" y="230" width="2270" height="150" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Raia_3_di" bpmnElement="Raia_3" isHorizontal="true"><dc:Bounds x="190" y="380" width="2270" height="150" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Raia_4_di" bpmnElement="Raia_4" isHorizontal="true"><dc:Bounds x="190" y="530" width="2270" height="150" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="inicio_di" bpmnElement="inicio"><dc:Bounds x="327" y="137" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="abrir_di" bpmnElement="abrir"><dc:Bounds x="465" y="115" width="140" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="triagem_di" bpmnElement="triagem"><dc:Bounds x="655" y="265" width="140" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="g_n1_di" bpmnElement="g_n1"><dc:Bounds x="890" y="280" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="resolver_di" bpmnElement="resolver"><dc:Bounds x="1035" y="265" width="140" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="encaminhar_di" bpmnElement="encaminhar"><dc:Bounds x="1225" y="265" width="140" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="diagnostico_di" bpmnElement="diagnostico"><dc:Bounds x="1415" y="415" width="140" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="g_peca_di" bpmnElement="g_peca"><dc:Bounds x="1650" y="430" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="compra_di" bpmnElement="compra"><dc:Bounds x="1795" y="565" width="140" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="encerrar_di" bpmnElement="encerrar"><dc:Bounds x="1985" y="265" width="140" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="fim_di" bpmnElement="fim"><dc:Bounds x="2227" y="287" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="fluxo_inicio_abrir_0_di" bpmnElement="fluxo_inicio_abrir_0"><di:waypoint x="363" y="155" /><di:waypoint x="465" y="155" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="fluxo_abrir_triagem_0_di" bpmnElement="fluxo_abrir_triagem_0"><di:waypoint x="605" y="155" /><di:waypoint x="630" y="155" /><di:waypoint x="630" y="305" /><di:waypoint x="655" y="305" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="fluxo_triagem_g_n1_0_di" bpmnElement="fluxo_triagem_g_n1_0"><di:waypoint x="795" y="305" /><di:waypoint x="890" y="305" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="fluxo_g_n1_resolver_0_di" bpmnElement="fluxo_g_n1_resolver_0"><di:waypoint x="940" y="305" /><di:waypoint x="1035" y="305" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="fluxo_g_n1_encaminhar_1_di" bpmnElement="fluxo_g_n1_encaminhar_1"><di:waypoint x="940" y="305" /><di:waypoint x="1225" y="305" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="fluxo_resolver_encerrar_0_di" bpmnElement="fluxo_resolver_encerrar_0"><di:waypoint x="1175" y="305" /><di:waypoint x="1985" y="305" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="fluxo_encaminhar_diagnostico_0_di" bpmnElement="fluxo_encaminhar_diagnostico_0"><di:waypoint x="1365" y="305" /><di:waypoint x="1390" y="305" /><di:waypoint x="1390" y="455" /><di:waypoint x="1415" y="455" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="fluxo_diagnostico_g_peca_0_di" bpmnElement="fluxo_diagnostico_g_peca_0"><di:waypoint x="1555" y="455" /><di:waypoint x="1650" y="455" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="fluxo_g_peca_compra_0_di" bpmnElement="fluxo_g_peca_compra_0"><di:waypoint x="1700" y="455" /><di:waypoint x="1725" y="455" /><di:waypoint x="1725" y="605" /><di:waypoint x="1795" y="605" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="fluxo_g_peca_encerrar_1_di" bpmnElement="fluxo_g_peca_encerrar_1"><di:waypoint x="1700" y="455" /><di:waypoint x="1725" y="455" /><di:waypoint x="1725" y="305" /><di:waypoint x="1985" y="305" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="fluxo_compra_encerrar_0_di" bpmnElement="fluxo_compra_encerrar_0"><di:waypoint x="1935" y="605" /><di:waypoint x="1960" y="605" /><di:waypoint x="1960" y="305" /><di:waypoint x="1985" y="305" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="fluxo_encerrar_fim_0_di" bpmnElement="fluxo_encerrar_fim_0"><di:waypoint x="2125" y="305" /><di:waypoint x="2227" y="305" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

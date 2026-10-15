@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Análise do processo — Abertura e tratamento de chamado de suporte de TI</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 48px 24px; background: #f6f6f3; color: #16211f;
+    font: 16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  main { max-width: 900px; margin: 0 auto; }
+  header { border-bottom: 1px solid #d9d6cd; padding-bottom: 20px; }
+  .sobre { font: 12px/1.4 ui-monospace, monospace; letter-spacing: .08em;
+            text-transform: uppercase; color: #6b7a76; }
+  h1 { font-size: 28px; margin: 8px 0 0; }
+  .cartoes { display: grid; gap: 1px; background: #d9d6cd; border: 1px solid #d9d6cd;
+              border-radius: 10px; overflow: hidden; margin: 28px 0;
+              grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  .cartao { background: #fff; padding: 16px 18px; }
+  .cartao dt { font: 12px/1.4 ui-monospace, monospace; color: #6b7a76;
+                text-transform: uppercase; letter-spacing: .06em; }
+  .cartao dd { margin: 6px 0 0; font-size: 22px; font-weight: 600; color: #0f5c55; }
+  h2 { font-size: 18px; margin: 36px 0 14px; }
+  .linha { display: grid; grid-template-columns: minmax(160px, 40%) 1fr 76px;
+            align-items: center; gap: 12px; padding: 6px 0; }
+  .rotulo { font-size: 14px; }
+  .rotulo em { display: block; font-style: normal; font-size: 12px; color: #6b7a76; }
+  .barra { height: 12px; border-radius: 6px; background: #0f5c55; }
+  .valor { font: 12px/1 ui-monospace, monospace; color: #6b7a76; text-align: right; }
+  footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid #d9d6cd;
+            font-size: 13px; color: #6b7a76; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="sobre">Análise de processo · gerada por mapeador.py</p>
+    <h1>Abertura e tratamento de chamado de suporte de TI</h1>
+  </header>
+
+  <dl class="cartoes">
+    <div class="cartao"><dt>Lead time</dt><dd>2.1 dias</dd></div><div class="cartao"><dt>Tempo de espera</dt><dd>2.0 dias</dd></div><div class="cartao"><dt>Trocas de área</dt><dd>5</dd></div><div class="cartao"><dt>Automatizáveis</dt><dd>3 de 7</dd></div><div class="cartao"><dt>Ganho estimado</dt><dd>13 min</dd></div>
+  </dl>
+
+  <h2>Tempo por etapa</h2>
+  <div class="linha"><span class="rotulo">Problema identificado<em>Usuário</em></span><span class="barra" style="width:1.0%"></span><span class="valor">0 min</span></div><div class="linha"><span class="rotulo">Abrir chamado no portal<em>Usuário</em></span><span class="barra" style="width:1.0%"></span><span class="valor">5 min</span></div><div class="linha"><span class="rotulo">Triar e classificar o chamado<em>Service Desk (N1)</em></span><span class="barra" style="width:1.0%"></span><span class="valor">8 min</span></div><div class="linha"><span class="rotulo">Resolvido no primeiro atendimento?<em>Service Desk (N1)</em></span><span class="barra" style="width:1.0%"></span><span class="valor">0 min</span></div><div class="linha"><span class="rotulo">Resolver e registrar a solução<em>Service Desk (N1)</em></span><span class="barra" style="width:1.0%"></span><span class="valor">15 min</span></div><div class="linha"><span class="rotulo">Encaminhar para a equipe técnica<em>Service Desk (N1)</em></span><span class="barra" style="width:1.0%"></span><span class="valor">5 min</span></div><div class="linha"><span class="rotulo">Diagnosticar e corrigir<em>Equipe Técnica (N2)</em></span><span class="barra" style="width:3.1%"></span><span class="valor">1.5 h</span></div><div class="linha"><span class="rotulo">Depende de peça ou fornecedor?<em>Equipe Técnica (N2)</em></span><span class="barra" style="width:1.0%"></span><span class="valor">0 min</span></div><div class="linha"><span class="rotulo">Comprar peça ou acionar fornecedor<em>Gestão de TI</em></span><span class="barra" style="width:100.0%"></span><span class="valor">2.0 dias</span></div><div class="linha"><span class="rotulo">Encerrar o chamado e confirmar com o usuário<em>Service Desk (N1)</em></span><span class="barra" style="width:1.0%"></span><span class="valor">10 min</span></div><div class="linha"><span class="rotulo">Chamado encerrado<em>Service Desk (N1)</em></span><span class="barra" style="width:1.0%"></span><span class="valor">0 min</span></div>
+
+  <footer>
+    Tempo de execução 2.9 h ·
+    espera 2.0 dias ·
+    lead time 2.1 dias.
+    O diagrama BPMN do processo está no arquivo <code>.bpmn</code>.
+  </footer>
+</main>
+</body>
+</html>

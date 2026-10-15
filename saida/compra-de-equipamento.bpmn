@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:collaboration id="Colaboracao_1"><bpmn:participant id="Piscina_1" name="Compra de equipamento de TI" processRef="Processo_1" /></bpmn:collaboration>
+  <bpmn:process id="Processo_1" isExecutable="false">
+    <bpmn:laneSet id="RaiaSet_1">
+      <bpmn:lane id="Raia_1" name="Solicitante"><bpmn:flowNodeRef>inicio</bpmn:flowNodeRef><bpmn:flowNodeRef>abrir</bpmn:flowNodeRef></bpmn:lane>
+      <bpmn:lane id="Raia_2" name="Gestão de TI"><bpmn:flowNodeRef>validar</bpmn:flowNodeRef><bpmn:flowNodeRef>aprovacao</bpmn:flowNodeRef><bpmn:flowNodeRef>comunicar</bpmn:flowNodeRef></bpmn:lane>
+      <bpmn:lane id="Raia_3" name="Compras"><bpmn:flowNodeRef>cotacao</bpmn:flowNodeRef><bpmn:flowNodeRef>pedido</bpmn:flowNodeRef></bpmn:lane>
+      <bpmn:lane id="Raia_4" name="Financeiro"><bpmn:flowNodeRef>conferir</bpmn:flowNodeRef><bpmn:flowNodeRef>fim</bpmn:flowNodeRef></bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="inicio" name="Necessidade identificada"><bpmn:outgoing>fluxo_inicio_abrir_0</bpmn:outgoing></bpmn:startEvent>
+    <bpmn:serviceTask id="abrir" name="Abrir solicitação de compra"><bpmn:incoming>fluxo_inicio_abrir_0</bpmn:incoming><bpmn:outgoing>fluxo_abrir_validar_0</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:userTask id="validar" name="Validar necessidade e orçamento"><bpmn:incoming>fluxo_abrir_validar_0</bpmn:incoming><bpmn:outgoing>fluxo_validar_aprovacao_0</bpmn:outgoing></bpmn:userTask>
+    <bpmn:exclusiveGateway id="aprovacao" name="Compra aprovada?"><bpmn:incoming>fluxo_validar_aprovacao_0</bpmn:incoming><bpmn:outgoing>fluxo_aprovacao_cotacao_0</bpmn:outgoing><bpmn:outgoing>fluxo_aprovacao_comunicar_1</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:userTask id="cotacao" name="Cotar com fornecedores"><bpmn:incoming>fluxo_aprovacao_cotacao_0</bpmn:incoming><bpmn:outgoing>fluxo_cotacao_pedido_0</bpmn:outgoing></bpmn:userTask>
+    <bpmn:userTask id="pedido" name="Emitir pedido e receber o material"><bpmn:incoming>fluxo_cotacao_pedido_0</bpmn:incoming><bpmn:outgoing>fluxo_pedido_conferir_0</bpmn:outgoing></bpmn:userTask>
+    <bpmn:serviceTask id="conferir" name="Conferir e lançar a nota fiscal"><bpmn:incoming>fluxo_pedido_conferir_0</bpmn:incoming><bpmn:outgoing>fluxo_conferir_comunicar_0</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:serviceTask id="comunicar" name="Comunicar o solicitante e encerrar"><bpmn:incoming>fluxo_aprovacao_comunicar_1</bpmn:incoming><bpmn:incoming>fluxo_conferir_comunicar_0</bpmn:incoming><bpmn:outgoing>fluxo_comunicar_fim_0</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:endEvent id="fim" name="Compra concluída"><bpmn:incoming>fluxo_comunicar_fim_0</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="fluxo_inicio_abrir_0" sourceRef="inicio" targetRef="abrir" />
+    <bpmn:sequenceFlow id="fluxo_abrir_validar_0" sourceRef="abrir" targetRef="validar" />
+    <bpmn:sequenceFlow id="fluxo_validar_aprovacao_0" sourceRef="validar" targetRef="aprovacao" />
+    <bpmn:sequenceFlow id="fluxo_aprovacao_cotacao_0" name="Sim" sourceRef="aprovacao" targetRef="cotacao" />
+    <bpmn:sequenceFlow id="fluxo_aprovacao_comunicar_1" name="Não" sourceRef="aprovacao" targetRef="comunicar" />
+    <bpmn:sequenceFlow id="fluxo_cotacao_pedido_0" sourceRef="cotacao" targetRef="pedido" />
+    <bpmn:sequenceFlow id="fluxo_pedido_conferir_0" sourceRef="pedido" targetRef="conferir" />
+    <bpmn:sequenceFlow id="fluxo_conferir_comunicar_0" sourceRef="conferir" targetRef="comunicar" />
+    <bpmn:sequenceFlow id="fluxo_comunicar_fim_0" sourceRef="comunicar" targetRef="fim" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagrama_1">
+    <bpmndi:BPMNPlane id="Plano_1" bpmnElement="Colaboracao_1">
+      <bpmndi:BPMNShape id="Piscina_1_di" bpmnElement="Piscina_1" isHorizontal="true"><dc:Bounds x="160" y="80" width="1920" height="600" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Raia_1_di" bpmnElement="Raia_1" isHorizontal="true"><dc:Bounds x="190" y="80" width="1890" height="150" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Raia_2_di" bpmnElement="Raia_2" isHorizontal="true"><dc:Bounds x="190" y="230" width="1890" height="150" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Raia_3_di" bpmnElement="Raia_3" isHorizontal="true"><dc:Bounds x="190" y="380" width="1890" height="150" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Raia_4_di" bpmnElement="Raia_4" isHorizontal="true"><dc:Bounds x="190" y="530" width="1890" height="150" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="inicio_di" bpmnElement="inicio"><dc:Bounds x="327" y="137" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="abrir_di" bpmnElement="abrir"><dc:Bounds x="465" y="115" width="140" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="validar_di" bpmnElement="validar"><dc:Bounds x="655" y="265" width="140" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="aprovacao_di" bpmnElement="aprovacao"><dc:Bounds x="890" y="280" width="50" height="50" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="cotacao_di" bpmnElement="cotacao"><dc:Bounds x="1035" y="415" width="140" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="pedido_di" bpmnElement="pedido"><dc:Bounds x="1225" y="415" width="140" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="conferir_di" bpmnElement="conferir"><dc:Bounds x="1415" y="565" width="140" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="comunicar_di" bpmnElement="comunicar"><dc:Bounds x="1605" y="265" width="140" height="80" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="fim_di" bpmnElement="fim"><dc:Bounds x="1847" y="587" width="36" height="36" /></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="fluxo_inicio_abrir_0_di" bpmnElement="fluxo_inicio_abrir_0"><di:waypoint x="363" y="155" /><di:waypoint x="465" y="155" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="fluxo_abrir_validar_0_di" bpmnElement="fluxo_abrir_validar_0"><di:waypoint x="605" y="155" /><di:waypoint x="630" y="155" /><di:waypoint x="630" y="305" /><di:waypoint x="655" y="305" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="fluxo_validar_aprovacao_0_di" bpmnElement="fluxo_validar_aprovacao_0"><di:waypoint x="795" y="305" /><di:waypoint x="890" y="305" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="fluxo_aprovacao_cotacao_0_di" bpmnElement="fluxo_aprovacao_cotacao_0"><di:waypoint x="940" y="305" /><di:waypoint x="965" y="305" /><di:waypoint x="965" y="455" /><di:waypoint x="1035" y="455" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="fluxo_aprovacao_comunicar_1_di" bpmnElement="fluxo_aprovacao_comunicar_1"><di:waypoint x="940" y="305" /><di:waypoint x="1605" y="305" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="fluxo_cotacao_pedido_0_di" bpmnElement="fluxo_cotacao_pedido_0"><di:waypoint x="1175" y="455" /><di:waypoint x="1225" y="455" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="fluxo_pedido_conferir_0_di" bpmnElement="fluxo_pedido_conferir_0"><di:waypoint x="1365" y="455" /><di:waypoint x="1390" y="455" /><di:waypoint x="1390" y="605" /><di:waypoint x="1415" y="605" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="fluxo_conferir_comunicar_0_di" bpmnElement="fluxo_conferir_comunicar_0"><di:waypoint x="1555" y="605" /><di:waypoint x="1580" y="605" /><di:waypoint x="1580" y="305" /><di:waypoint x="1605" y="305" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="fluxo_comunicar_fim_0_di" bpmnElement="fluxo_comunicar_fim_0"><di:waypoint x="1745" y="305" /><di:waypoint x="1770" y="305" /><di:waypoint x="1770" y="605" /><di:waypoint x="1847" y="605" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

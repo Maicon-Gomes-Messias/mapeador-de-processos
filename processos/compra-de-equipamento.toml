@@ -1,0 +1,86 @@
+# Segundo exemplo de processo: compra de equipamento de TI
+#
+# Este exemplo existe para mostrar que a ferramenta não é específica de suporte:
+# qualquer processo que passe por áreas diferentes pode ser descrito assim.
+#
+# Repare que só a decisão precisa declarar 'proximo'. Nas demais etapas, o
+# processo simplesmente segue para a próxima da lista.
+
+raias = ["Solicitante", "Gestão de TI", "Compras", "Financeiro"]
+
+[processo]
+nome = "Compra de equipamento de TI"
+descricao = """
+Da necessidade identificada até a nota fiscal lançada: o solicitante abre o
+pedido, a Gestão de TI valida orçamento, Compras cota e recebe o material, e o
+Financeiro confere a nota.
+"""
+
+[[etapas]]
+id = "inicio"
+nome = "Necessidade identificada"
+tipo = "inicio"
+raia = "Solicitante"
+
+[[etapas]]
+id = "abrir"
+nome = "Abrir solicitação de compra"
+tipo = "tarefa"
+raia = "Solicitante"
+tempo_min = 10
+sistema = "Sistema de compras"
+automatizavel = true
+
+[[etapas]]
+id = "validar"
+nome = "Validar necessidade e orçamento"
+tipo = "tarefa"
+raia = "Gestão de TI"
+tempo_min = 20
+espera_min = 480          # fica até 1 dia na fila de análise
+
+[[etapas]]
+id = "aprovacao"
+nome = "Compra aprovada?"
+tipo = "decisao"
+raia = "Gestão de TI"
+proximo = ["cotacao", "comunicar"]
+rotulos = { cotacao = "Sim", comunicar = "Não" }
+
+[[etapas]]
+id = "cotacao"
+nome = "Cotar com fornecedores"
+tipo = "tarefa"
+raia = "Compras"
+tempo_min = 60
+espera_min = 1440         # 1 dia aguardando retorno dos fornecedores
+
+[[etapas]]
+id = "pedido"
+nome = "Emitir pedido e receber o material"
+tipo = "tarefa"
+raia = "Compras"
+tempo_min = 30
+espera_min = 4320         # 3 dias de prazo de entrega
+
+[[etapas]]
+id = "conferir"
+nome = "Conferir e lançar a nota fiscal"
+tipo = "tarefa"
+raia = "Financeiro"
+tempo_min = 25
+automatizavel = true
+
+[[etapas]]
+id = "comunicar"
+nome = "Comunicar o solicitante e encerrar"
+tipo = "tarefa"
+raia = "Gestão de TI"
+tempo_min = 10
+automatizavel = true
+
+[[etapas]]
+id = "fim"
+nome = "Compra concluída"
+tipo = "fim"
+raia = "Financeiro"
