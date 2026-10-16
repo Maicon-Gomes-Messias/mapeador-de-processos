@@ -108,6 +108,16 @@ python mapeador.py "processos/*.toml" --saida saida
 | `processos/chamado-suporte-ti.toml` | Um processo de suporte, comentado linha a linha — é o melhor para aprender o formato |
 | `processos/compra-de-equipamento.toml` | Uma compra de equipamento, mais enxuto — mostra que a ferramenta serve para qualquer processo, não só TI |
 
+## Um caso analisado do começo ao fim
+
+Se quiser ver a ferramenta sendo usada de verdade — leitura do AS-IS, identificação do
+gargalo, propostas de melhoria e os indicadores para acompanhar — leia
+[`docs/caso-de-uso.md`](docs/caso-de-uso.md).
+
+O resumo: no processo de exemplo, o chamado leva 2,1 dias para ser resolvido, mas só 2,9
+horas disso é trabalho de alguém. Mais de 95% do tempo o chamado está parado. E quase
+toda essa espera está em um único ponto — a compra de peça.
+
 ## Como descrever um processo
 
 O processo é um arquivo **TOML** — texto simples, com seções entre colchetes. Veja
@@ -201,6 +211,8 @@ mapeador-de-processos/
 ├── processos/
 │   ├── chamado-suporte-ti.toml              # exemplo 1, comentado linha a linha
 │   └── compra-de-equipamento.toml           # exemplo 2, mais enxuto
+├── docs/
+│   └── caso-de-uso.md                       # análise completa de um processo
 ├── saida/                                   # resultados já gerados (exemplos)
 │   ├── chamado-suporte-ti.bpmn / .md / .html
 │   └── compra-de-equipamento.bpmn / .md / .html
